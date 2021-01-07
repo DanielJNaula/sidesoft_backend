@@ -1,14 +1,13 @@
 # sidesoft-backend
 
-## crear una base de datos en mysql
-## con el nombre: sidesoft_backend
+## 1. crear una base de datos en mysql con el nombre: sidesoft_backend
 
-## Ejecutar las migraciones
+## 2. Ejecutar las migraciones
 ```
 php artisan migrate
 ```
 
-### Levantar el servidor backend asegurandoce que este ejecutandoce en el puerto 8000
+### 3. Levantar el servidor backend asegurandoce que este ejecutandoce en el puerto 8000
 ```
 php artisan serve
 ```
