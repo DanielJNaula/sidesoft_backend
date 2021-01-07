@@ -42,6 +42,7 @@ class ProductoController extends Controller
         return response()->json([
             'res'     => true,
             'message' => 'Producto creado correctamente',
+            'data'    => new ProductoResource(Producto::findOrFail($producto->id))
 
         ], 200);
         
@@ -73,24 +74,24 @@ class ProductoController extends Controller
         ], [
             'nombre.required'      => 'El campo nombre es obligatorio',
             'nombre.max'           => 'El campo nombres permite máximo 100 caracteres',
-            'nombre.unique'        => 'El nombre debe ser único (ya existe una categoría con este nombre)',
+            'nombre.unique'        => 'El nombre debe ser único (ya existe un producto con este nombre)',
         ]);
 
         $producto->nombre = $request->nombre;
         $producto->save();
 
-        if ($request->hasFile('imagen')) {
+        /*if ($request->hasFile('imagen')) {
             $imagen_producto  = ImagenProducto::where('producto_id', $producto->id)->first();
             ImagenProducto::eliminarImagen($imagen_producto);
             $nombre_imagen             = ImagenProducto::guardarImagen($request);
             $imagen_producto->path = $nombre_imagen;
             $imagen_producto->save();
-        }
+        }*/
 
         return response()->json([
             'res'     => true,
             'message' => 'Producto actualizado correctamente',
-
+            'data'    => new ProductoResource(Producto::findOrFail($producto->id))
         ], 200);
     }
 
