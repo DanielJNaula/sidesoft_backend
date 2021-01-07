@@ -24,8 +24,8 @@ class ImagenProducto extends Model
     {
         $file          = $request->file('imagen');
         $nombre_imagen = time() . '-' . strtr($request->nombre, " ", "_") . '.' . $file->getClientOriginalExtension();
-        $path          = '/sidesoft/productos/' . $nombre_imagen;
+        $path          = 'sidesoft/productos/' . $nombre_imagen;
         $imagen        = Image::make($file->getRealPath())->save($path);
-        return $path;
+        return '/sidesoft/productos/' . $nombre_imagen;
     }
 }
