@@ -28,19 +28,12 @@ class ProductoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(StoreProducto $request)
-    {
-        
-        /*$validated = $request->validated();
-
-        if ($validated->fails()) {
-            return response()->json($validated->errors(), 400);
-        }*/
-        
+    {   
         $producto = new Producto;
         $producto->nombre = $request->nombre;
         $producto->save();
 
-        $path_imagen = ImagenProducto::guardarImagen($request)/*'/hola2/hjkjlsd'*/;
+        $path_imagen = ImagenProducto::guardarImagen($request);
         $imagen_producto = new ImagenProducto;
         $imagen_producto->path = $path_imagen;
         $imagen_producto->producto_id = $producto->id; 
@@ -74,8 +67,25 @@ class ProductoController extends Controller
      */
     public function update(Request $request, Producto $producto)
     {
+        $request->validate([
+            'nombre'      => 'required|max:100|unique:productos,nombre,' . $producto->id,
+
+        ], [
+            'nombre.required'      => 'El campo nombre es obligatorio',
+            'nombre.max'           => 'El campo nombres permite máximo 100 caracteres',
+            'nombre.unique'        => 'El nombre debe ser único (ya existe una categoría con este nombre)',
+        ]);
+
         $producto->nombre = $request->nombre;
         $producto->save();
+
+        if ($request->hasFile('imagen')) {
+            $imagen_producto  = ImagenProducto::where('producto_id', $producto->id)->first();
+            ImagenProducto::eliminarImagen($imagen_producto);
+            $nombre_imagen             = ImagenProducto::guardarImagen($request);
+            $imagen_producto->path = $nombre_imagen;
+            $imagen_producto->save();
+        }
 
         return response()->json([
             'res'     => true,

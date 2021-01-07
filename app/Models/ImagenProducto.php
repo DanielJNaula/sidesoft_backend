@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Image;
+use File;
 
 class ImagenProducto extends Model
 {
@@ -27,5 +28,10 @@ class ImagenProducto extends Model
         $path          = 'sidesoft/productos/' . $nombre_imagen;
         $imagen        = Image::make($file->getRealPath())->save($path);
         return '/sidesoft/productos/' . $nombre_imagen;
+    }
+
+    public static function eliminarImagen($imagenProducto)
+    {
+        File::delete(public_path($imagenProducto->path));
     }
 }
